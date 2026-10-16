@@ -1,7 +1,5 @@
-// Readable Reddit Reader source. The bookmarklet will be packaged separately.
 (async () => {
   try {
-    // Build off-page so a fetch or rendering failure leaves the current page intact.
     const readerDocument = document.implementation.createHTMLDocument();
 
     function element(tag, text, className) {
@@ -11,7 +9,6 @@
       return node;
     }
 
-    // Only Reddit's formatted bodies need HTML parsing; other content uses textContent.
     function renderBody(html, plainText, className) {
       const body = element("div", null, "md " + className);
       if (html) {
@@ -62,7 +59,6 @@
       return "just now";
     }
 
-    // Share score-first metadata formatting, with extra fields for posts and comments.
     function renderMetadata(data, kind) {
       const isPost = kind === "post";
       const author = "u/" + (data.author || "[unknown]");
@@ -97,7 +93,6 @@
       }
     }
 
-    // Fetch the same JSON endpoint, retaining the original test cookie assignment.
     const jsonUrl = new URL(location.href);
     // Note that using this cookie will log you in to this user - a real user with no data or activity
     document.cookie = "reddit_session=eyJhbGciOiJSUzI1NiIsImtpZCI6IlNIQTI1NjpsVFdYNlFVUEloWktaRG1rR0pVd1gvdWNFK01BSjBYRE12RU1kNzVxTXQ4IiwidHlwIjoiSldUIn0.eyJzdWIiOiJ0Ml8yb3ZoM3hkaXFvIiwiZXhwIjoxODA3NjYzNjMwLjcwNjE0LCJpYXQiOjE3OTIwMjUyMzAuNzA2MTQsImp0aSI6Im1jR0ZzWU5nNUlid0V5MnFRYl84ZjloMS0xS1d5USIsImF0IjoxLCJjaWQiOiJjb29raWUiLCJsY2EiOjE3OTIwMjQzNDAyOTIsInNjcCI6ImVKd0FBZ0Q5XzF0ZEF3QUJGUUM1IiwiZmxvIjoyLCJhbXIiOlsicHdkIl19.lUNsr9sqg_UWPOnxnngg3WnW5cdVMPN3V4ISnptWjnhUiqvGXIFPubXZnbWYpKDmrJsl9qjO4yMKj3ACqX4h5-RcieDjmU7AQKF8dxS3NbGkgLeEfXdsSb2drmWY9jA--wrQNVo7fONzE4-Xc3ng8rUwLDL8ReSQ8TWXvM12YVa0jAmxSlrnSYkaPyMm9o8-24qhZPfWNEjgqNG-IZ08rAw0O2lhDJe3aCu3WoiWvIUiP9CmoxLbE2JEKhiS2cNBAho-FZwH_ZHKond6mxPjagUTOYS0mCedYIBqHHO_bgYQlDEFALvKJPHY61Ilq3UWanBRTuT2rhYbn8NhFYNCLA;path=/;";
@@ -154,8 +149,6 @@
     }
     readerDocument.body.append(root);
 
-    // Install the finished reader and remove the site's markup and styles.
-    // Existing window/document listeners and timers are not unloaded by a DOM swap.
     window.stop();
     if ("adoptedStyleSheets" in document) document.adoptedStyleSheets = [];
     document.replaceChild(readerDocument.documentElement, document.documentElement);
